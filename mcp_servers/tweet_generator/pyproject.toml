@@ -1,0 +1,19 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "tweet-generator-mcp-server"
+version = "0.1.0"
+description = "Tweet Generator MCP Server for IPL Tweet Generator"
+requires-python = ">=3.11"
+dependencies = [
+    "mcp-server",
+    "pydantic",
+    "python-dotenv",
+    "starlette",
+    "uvicorn",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["."]

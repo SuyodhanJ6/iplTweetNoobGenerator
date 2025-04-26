@@ -1,0 +1,134 @@
+Conversation opened. 1 read message.
+
+Skip to content
+Using Gmail with screen readers
+How to design Agentic systems
+
+Pau Labarta Bajo
+<paulabartabajo@substack.com>
+Unsubscribe
+1:35 PM (3 hours ago)
+to me
+
+Forwarded this email? Subscribe here for more
+
+How to design Agentic systems
+That work for your company
+Pau Labarta Bajo
+Apr 26
+
+ 
+
+
+
+
+READ IN APP
+ 
+There is plenty of advice on how to build agent prototypes that
+
+use third-party API, like OpenAI or Antrhopic.
+
+encapsulate all the agent + tooling logic inside a single Python program
+
+run locally with docker compose
+
+But the thing is, companies out there need WAY MORE than this to extract actual business value from this technology.
+
+To scale these prototypes into agentic systems that help your company either
+
+make more money, or
+
+spend less money
+
+you need to use the right infrastructure and tooling.
+
+Let me explain.
+
+
+System architecture 📐
+Before we get our hands-dirty with specific tools and components, we need to understand the backbone and system architecture.
+
+Agentic workflows are way more than a Python program. They are a collection of services, running inside a compute platform with proper monitoring.
+
+
+What compute platform to choose?
+
+Cloud manages services are great if you want to build something quick. However, if you plan to play the long game, the most cost-effective way I know is Kubernetes.
+
+If you need an ML-engineer-friendly intro to the topic, check out this previous article
+
+Kubernetes for ML engineers
+Pau Labarta Bajo
+·
+Feb 22
+Kubernetes for ML engineers
+Kubernetes is one of the hard skills you nonstop find in job descriptions for ML engineers.
+
+Read full story
+Ok. Let’s go back to our LLMOps blueprint.
+
+Its main components are:
+
+Agentic worfklow definitons, typically written in Python using a library like Langgraph or Crew AI, or even better in Rust.
+
+
+LLM servers, running on GPU nodes, that serve the text completions the agent workflows need for reasoning, sumarization, tool parameter parsing...
+
+
+Model Context Protocol servers (MCP servers) and clients that connect agents to the internal services of your company (aka the tools), which can be
+
+read-only, for example a data warehouse in PostgreSQL, or
+
+read-and-write, for example the WhatsappAPI to send and receive customer messages.
+
+
+To understand the system is working the way you expect it to work, you need to collect and visualise logs and metrics, from all these services, using tools like
+
+Prometheus,
+
+Grafana, and
+
+the new kid on the block Opik from CometML.
+
+
+
+With these element in place, you can start building modular agentic systems, that can
+
+Listen to incoming tasks (e.g. a client initiating a conversation with your whatsapp chatbot)
+
+Route the task to the right agent
+
+Apply agent-specific logic (meaning a few LLM autocompletions and tool calls)
+
+Return the response back to the client.
+
+
+
+This blueprint can be a good starting point if you plan on building products and services based on LLMs and agents, that work for your clients (and for your pocket ;-)).
+
+I hope this helps,
+
+Wish you a great weekend,
+
+And talk to you next week!
+
+Pau
+
+You're currently a free subscriber to Real-World Machine Learning. For the full experience, upgrade your subscription.
+
+Upgrade to paid
+
+ 
+Share
+ 
+ 
+Like
+Comment
+Restack
+ 
+© 2025 Pau Labarta Bajo
+C/Pujades 167-171, Barcelona (Spain)
+Unsubscribe
+
+Start writing
+

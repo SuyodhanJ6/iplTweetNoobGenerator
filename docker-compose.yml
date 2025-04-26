@@ -1,0 +1,95 @@
+version: '3.8'
+
+services:
+  agent:
+    build: ./agent
+    env_file: .env
+    ports:
+      - "${AGENT_PORT:-8000}:8000"
+    depends_on:
+      - tweet-mcp
+      - metrics-server
+    networks:
+      - mcp-network
+    volumes:
+      - ./agent/agent.py:/app/agent/agent.py
+      - ./agent/app.py:/app/agent/app.py
+      # Mount other specific files as needed
+      - agent-data:/data
+    environment:
+      - METRICS_URL=http://metrics-server:9090
+      - MCP_HOST=tweet-mcp
+    command: >
+      bash -c "python -m agent.app"
+
+  tweet-mcp:
+    build: ./mcp_servers/tweet_generator
+    env_file: .env
+    ports:
+      - "${TWEET_MCP_PORT:-3002}:3002"
+    networks:
+      - mcp-network
+    volumes:
+      - ./mcp_servers/tweet_generator/tools:/app/tools
+      - ./mcp_servers/tweet_generator/tweet_mcp_server.py:/app/tweet_mcp_server.py
+      - tweet-data:/app/data
+    command: >
+      python tweet_mcp_server.py --host 0.0.0.0
+
+  # Metrics Server for collecting metrics and logs
+  metrics-server:
+    build: ./logs_metrics
+    env_file: .env
+    ports:
+      - "${METRICS_PORT:-9090}:9090"
+    networks:
+      - mcp-network
+      - monitoring-network
+    volumes:
+      - ./logs_metrics/logs:/app/logs
+    restart: unless-stopped
+
+  # Prometheus for metrics collection
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - "${PROMETHEUS_PORT:-9091}:9090"
+    volumes:
+      - ./logs_metrics/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus-data:/prometheus
+    networks:
+      - monitoring-network
+    restart: unless-stopped
+    depends_on:
+      - metrics-server
+
+  # Grafana for data visualization
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_USER=${GRAFANA_ADMIN_USER:-admin}
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASSWORD:-admin}
+      - GF_USERS_ALLOW_SIGN_UP=false
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - ./logs_metrics/grafana/provisioning:/etc/grafana/provisioning
+      - ./logs_metrics/grafana/dashboards:/var/lib/grafana/dashboards
+    networks:
+      - monitoring-network
+    restart: unless-stopped
+    depends_on:
+      - prometheus
+
+networks:
+  mcp-network:
+    driver: bridge
+  monitoring-network:
+    driver: bridge
+
+volumes:
+  agent-data:
+  tweet-data:
+  prometheus-data:
+  grafana-data:

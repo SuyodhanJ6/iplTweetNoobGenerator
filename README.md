@@ -17,23 +17,7 @@ The MCP architecture allows for a modular design where:
 - Agents can connect to these servers via SSE (Server-Sent Events)
 - Communication follows the MCP protocol, enabling interoperability
 
-```
-┌─────────────────┐      ┌───────────────────────┐
-│                 │      │                       │
-│   IPL Tweet     │◄────►│  Tweet Generator MCP  │
-│    Agent        │      │       Server          │
-│                 │      │                       │
-└─────────────────┘      └───────────────────────┘
-        ▲                           ▲
-        │                           │
-        ▼                           ▼
-┌─────────────────┐      ┌───────────────────────┐
-│   Metrics &     │      │                       │
-│   Monitoring    │◄────►│   Prometheus/Grafana  │
-│    Server       │      │                       │
-│                 │      │                       │
-└─────────────────┘      └───────────────────────┘
-```
+![IPL Tweet Generator Architecture](docs/Agent-Workflow-Architecture.png)
 
 ## Components
 

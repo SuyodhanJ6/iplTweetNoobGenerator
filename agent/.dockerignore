@@ -1,0 +1,44 @@
+# Python generated files
+**/__pycache__/
+**/*.py[cod]
+**/*$py.class
+**/*.so
+**/.Python
+**/env/
+**/build/
+**/develop-eggs/
+**/dist/
+**/downloads/
+**/eggs/
+**/.eggs/
+**/lib/
+**/lib64/
+**/parts/
+**/sdist/
+**/var/
+**/*.egg-info/
+**/.installed.cfg
+**/*.egg
+
+# Environment and IDE files
+**/.env
+**/.venv
+**/venv/
+**/ENV/
+**/.idea/
+**/.vscode/
+**/*.swp
+**/*.swo
+
+# Do NOT ignore essential application files
+!agent.py
+!app.py
+!mcp_client.py
+!__init__.py
+!routes/
+!routes/**
+!prompts/
+!prompts/**
+!pyproject.toml
+!uv.lock
+
